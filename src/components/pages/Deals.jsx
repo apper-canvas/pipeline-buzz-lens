@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
-import { AuthContext } from "@/App";
+import { useAuth } from "@/layouts/Root";
 import ApperIcon from "@/components/ApperIcon";
 import SearchBar from "@/components/molecules/SearchBar";
 import Error from "@/components/ui/Error";
@@ -14,8 +14,8 @@ import Button from "@/components/atoms/Button";
 import dealService from "@/services/api/dealService";
 import contactService from "@/services/api/contactService";
 const Deals = () => {
-const authMethods = useContext(AuthContext);
-  const { isInitialized, userId } = authMethods || {};
+const { isInitialized, user } = useAuth();
+  const userId = user?.userId;
   const [deals, setDeals] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [filteredDeals, setFilteredDeals] = useState([]);
@@ -227,7 +227,7 @@ const sortedDeals = [...filteredDeals].sort((a, b) => {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleEditDeal(deal)}
-                        disabled={deal.Owner?.Id !== userId}
+disabled={deal.Owner?.Id !== userId}
                         className={deal.Owner?.Id !== userId ? "opacity-50 cursor-not-allowed" : ""}
                       >
                         <ApperIcon name="Edit2" size={16} />
